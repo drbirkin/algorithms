@@ -1,6 +1,6 @@
 import time
 
-def linear_search (value, arr, N):
+def binary_search_iterate (value, arr):
     for i in range(N):
         if value == arr[i]:
             return i
@@ -11,7 +11,7 @@ start = time.perf_counter()
 arr = [2, 3, 7, 10, 12]
 target = 2
 index_n = len(arr)
-index = linear_search(target, arr, index_n)
+index = binary_search_iterate(target, arr)
 
 end = time.perf_counter()
 
