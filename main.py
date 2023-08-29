@@ -1,4 +1,5 @@
 import time
+from typing import List
 
 
 def linear_search(value, arr, index):
@@ -54,7 +55,18 @@ def linear_search_front_head(value, arr, index):
         if arr[i] == value:
             arr[0], arr[i] = value, arr[0]
             return {"index": i, "is_found": True}
-    return {'is_found': False}
+    return {"is_found": False}
+
+
+def linear_search_hash_table(arr: List[int], value: int, index: int) -> dict:
+    hash_table = dict()
+
+    for i in range(index + 1):
+        hash_table[arr[i]] = i
+    if value in hash_table:
+        return {"index": hash_table.get(value, None), "is_found": True}
+    else:
+        return {"is_found": False}
 
 
 def performance_tester(fn, target, *args):
@@ -89,6 +101,9 @@ performance_tester(linear_search_sentinel, target, arr)
 #     performance_tester(linear_search_transposition, target, arr, index)
 
 # front/head
-while arr[0] != target:
-    performance_tester(linear_search_front_head, target, arr, index)
-print(arr[0])
+# while arr[0] != target:
+#     performance_tester(linear_search_front_head, target, arr, index)
+# print(arr[0])
+
+# hash table
+performance_tester(linear_search_hash_table, arr, target, index)
