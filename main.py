@@ -48,6 +48,15 @@ def linear_search_transposition(value, arr, index):
     return {"is_found": False}
 
 
+def linear_search_front_head(value, arr, index):
+    # swap fist elment with found element
+    for i in range(index + 1):
+        if arr[i] == value:
+            arr[0], arr[i] = value, arr[0]
+            return {"index": i, "is_found": True}
+    return {'is_found': False}
+
+
 def performance_tester(fn, target, *args):
     start = time.perf_counter()
     result = fn(target, *args)
@@ -74,6 +83,12 @@ performance_tester(linear_search_recursive, target, arr, index)
 performance_tester(linear_search_sentinel, target, arr)
 
 # improvements with transposition
+
+# transposition
+# while arr[0] != target:
+#     performance_tester(linear_search_transposition, target, arr, index)
+
+# front/head
 while arr[0] != target:
-    performance_tester(linear_search_transposition, target, arr, index)
+    performance_tester(linear_search_front_head, target, arr, index)
 print(arr[0])
