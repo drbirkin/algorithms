@@ -1,6 +1,6 @@
 import time
 from typing import List
-
+from concurrent.futures import ThreadPoolExecutor
 
 def linear_search(value, arr, index):
     for i in range(index + 1):
@@ -69,6 +69,14 @@ def linear_search_hash_table(arr: List[int], value: int, index: int) -> dict:
         return {"is_found": False}
 
 
+def linear_search_multi_thread( value: int, arr: List[int], index: int, n: int) -> dict:
+    for i in range(n * index // thread_max, (n + 1) * (index + 1) // thread_max):
+        if value == arr[i]:
+            return {"index": i, "is_found": True}
+        else:
+            return {"is_found": False}
+
+
 def performance_tester(fn, target, *args):
     start = time.perf_counter()
     result = fn(target, *args)
@@ -84,6 +92,7 @@ target = 10
 arr = list(range(target + 1))
 index_n = len(arr)
 index = index_n if index_n < len(arr) else index_n - 1
+thread_max = 10
 
 # linear search
 performance_tester(linear_search, target, arr, index)
@@ -107,3 +116,8 @@ performance_tester(linear_search_sentinel, target, arr)
 
 # hash table
 performance_tester(linear_search_hash_table, arr, target, index)
+
+# multithreading
+with ThreadPoolExecutor(max_workers=thread_max) as executor:
+    for i in range(thread_max + 1):
+        executor.submit(performance_tester, linear_search_multi_thread, target, arr, index, i)
