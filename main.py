@@ -50,7 +50,7 @@ def linear_search_transposition(value, arr, index):
 
 
 def linear_search_front_head(value, arr, index):
-    # swap fist elment with found element
+    # swap first element with found element
     for i in range(index + 1):
         if arr[i] == value:
             arr[0], arr[i] = value, arr[0]
