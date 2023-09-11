@@ -126,17 +126,71 @@ def binary_search_last(value: int, arr: List[int], end_index: int) -> dict:
 
     return result
 
+def binary_uniform_lookup (value: int, arr: List[int], max_size: int, end_index: int) -> dict:
+    table = uniform_table(max_size, end_index)
+    
+    index = table[0] - 1
+    co = 0
+    
+    while table[co] != 0:
+        if arr[index] == value: return {"found": True, "index": index}
+        elif arr[index] < value:
+            co += 1 
+            index += table[co]
+        else: 
+            co += 1
+            index -= table[co]
+    
+    return {"found": False}
+        
+def uniform_table (max_size: int, end_index: int) -> list :
+    lookup_table = [0] * max_size
+    pow = 1
+    co = 0
+    # print text part
+    interval_textformat = {
+        "interval_text": "",
+        "start_interval": 0,
+        "end_interval": 0
+    }
+    
+    while True:
+        pow <<= 1
+        mid_interval = (end_index + (pow >> 1)) // pow
+        lookup_table[co] = mid_interval
+        
+        # text part
+        uniform_table_text(interval_textformat, lookup_table = lookup_table, co = co, end_index = end_index, pow = pow)
+        
+        if lookup_table[co] == 0: break
+        co += 1
+    
+    print(interval_textformat["interval_text"])
+    
+    return lookup_table
+
+def uniform_table_text (interval_textformat, **args):
+    lookup_table, co, pow, end_index = args.values()
+    print(co)
+    interval_textformat["end_interval"] = (interval_textformat["end_interval"] + lookup_table[co]) if( interval_textformat["end_interval"] + lookup_table[co] ) - 1> interval_textformat["end_interval"]  else 0
+    print(f"( {end_index} + {pow >> 1} ) / {pow} = {lookup_table[co]}")
+    print(co, pow, lookup_table[co])
+    interval_textformat["interval_text"] += f'[{interval_textformat["start_interval"]}{(" - " + str(interval_textformat["end_interval"] - 1) + "], ") if interval_textformat["end_interval"] else "], "}' if lookup_table[co] > 0 else ''
+    interval_textformat["start_interval"] += lookup_table[co]
+    
 
 start = time.perf_counter()
 
 arr = [2, 3, 7, 10, 12, 18, 18, 21, 35, 36, 38, 321, 324, 1234]
 target = 1234
 index_n = len(arr)
+MAX_SIZE = 1000
 # result = binary_search_recursive(target, arr, index_n - 1)
 # result = binary_search_iternate(target, arr, index_n - 1)
 # result = binary_search_first(target, arr, index_n - 1)
 # result = binary_search_last(target, arr, index_n - 1)
-result = binary_search_meta(target, arr, index_n - 1)
+# result = binary_search_meta(target, arr, index_n - 1)
+result = binary_uniform_lookup(target, arr, MAX_SIZE, index_n)
 
 end = time.perf_counter()
 
