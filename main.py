@@ -181,8 +181,8 @@ def uniform_table_text (interval_textformat, **args):
 
 start = time.perf_counter()
 
-arr = [2, 3, 7, 10, 12, 18, 18, 21, 35, 36, 38, 321, 324, 1234]
-target = 1234
+arr = range(0, 100001)
+target = 12343
 index_n = len(arr)
 MAX_SIZE = 1000
 # result = binary_search_recursive(target, arr, index_n - 1)
