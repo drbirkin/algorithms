@@ -169,6 +169,7 @@ def uniform_table (max_size: int, end_index: int) -> list :
     
     return lookup_table
 
+# print seperated intervals
 def uniform_table_text (interval_textformat, **args):
     lookup_table, co, pow, end_index = args.values()
     print(co)
