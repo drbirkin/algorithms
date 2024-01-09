@@ -15,15 +15,12 @@ class Socialmedia:
     # O(n)
     def __init__(self, N:int):
         self.__length = N
-        self.array = [{"name": f"name{i}"} for i in range(self.__length + 1)]
+        self.array = [{"name": f"name-{i}",
+                       "id": i} for i in range(self.__length + 1)]
     # O(n) 
     def is_connect(self, p_name:str, q_name:str):
-        p1, p2 = ''
-        for profile in self.array:
-            if profile.get('name') == p_name:
-                p1 = profile
-            elif profile.get('name') == q_name:
-                p2 = profile
+        p_id = p_name.split('-')[1]
+        q_id = q_name.split('-')[1]
                 
-        return p1.get["name"] == p2.get["name"]
+        return p_id == q_id
     
