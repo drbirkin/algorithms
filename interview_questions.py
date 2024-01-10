@@ -15,19 +15,27 @@ class Socialmedia:
     # O(n)
     def __init__(self, N:int):
         self.__length = N
-        self.array = [{"name": f"name-{i}",
-                       "friend": f'name-{i}',
-                       "id": i} for i in range(self.__length + 1)]
+        self.array = list(range(self.__length + 1))
+        self.size = [1] * N
     # O(logn)
-    def is_connect(self, p_name:str, q_name:str):
-        p_id = p_name.split('-')[1]
-        q_id = q_name.split('-')[1]
-
+    def root(self, id:int):
+        profile = self.root(self.array[id])
+        return profile
+    # O(logn)
+    def is_connect(self, p_id:int, q_id:int):
         p_friend = self.root[p_id]
         q_friend = self.root[q_id]
 
-        return p_friend.get("friend") == q_friend.get("friend")
+        return p_friend == q_friend
     # O(logn)
-    def root(self, id:int):
-        id = self.array[self.root(self.array[id])]
-        return id
+    def union(self, p:int, q:int):
+        p_friend = self.root(p)
+        q_friend = self.root(q)
+        
+        if p_friend != q_friend:
+            
+            if self.size[p_friend] < self.size[q_friend]:
+                p_friend, q_friend = q_friend, p_friend
+            self.array[q_friend] = p_friend
+            if self.size[p_friend] == self.size[q_friend]:
+                self.size[p_friend] += 1
