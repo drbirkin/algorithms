@@ -31,37 +31,39 @@ class Socialmedia:
     def union(self, p:int, q:int):
         p_friend = self.root(p)
         q_friend = self.root(q)
-        
+
         if p_friend != q_friend:
-            
+
             if self.size[p_friend] < self.size[q_friend]:
                 p_friend, q_friend = q_friend, p_friend
             self.array[q_friend] = p_friend
             if self.size[p_friend] == self.size[q_friend]:
                 self.size[p_friend] += 1
-                
+
 # Question 2
-# Union-find with specific canonical element. Add a method 
-# find() to the union-find data type so that 
-# find(i) returns the largest element in the connected component containing i. 
-# The operations, 
-# union(), 
-# connected(), and 
+# Union-find with specific canonical element. Add a method
+# find() to the union-find data type so that
+# find(i) returns the largest element in the connected component containing i.
+# The operations,
+# union(),
+# connected(), and
 # find() should all take logarithmic time or better.
 
-# For example, if one of the connected components is 
-# {1,2,6,9}, then the find() method should return 
+# For example, if one of the connected components is
+# {1,2,6,9}, then the find() method should return
 # 9 for each of the four elements in the connected components.
 
 class Findlargest:
     array = list()
+    maximum = 0
     # O(n)
-    def __int__(self, N:int):
+    def __init__(self, N:int):
         self.__length = N
         self.array = list(range(self.__length + 1))
         self.size = [1] * N
     # O(logn)
     def find(self, value:int):
+        # if value < self.array[value]: self.maximum = self.array[value]
         value = self.find(self.array[value])
         return value
     # O(logn)
@@ -69,14 +71,20 @@ class Findlargest:
         return self.find(p) == self.find(q)
     # O(log(n)) TODO larger number as root
     def union (self, p:int, q:int):
-        p_value = self.root(p)
-        q_value = self.root(q)
-        
+        p_value = self.find(p)
+        q_value = self.find(q)
+
         if p_value != q_value:
-        
+
             if self.size[p_value] <= self.size[q_value]:
-                self.array[p_value] = q_value if q
+                self.array[p_value] = q_value
                 self.size[q_value] += self.size[p_value]
             else:
                 self.array[q_value] = p_value
-                self.size[p_value] += self.size[q_value] 
+                self.size[p_value] += self.size[q_value]
+
+social_media = Socialmedia(10)
+find_largest = Findlargest(10)
+find_largest.union(8, 10)
+find_largest.union(2, 10)
+find_largest.find(2)
