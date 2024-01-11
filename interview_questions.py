@@ -60,11 +60,14 @@ class Findlargest:
     def __init__(self, N:int):
         self.__length = N
         self.array = list(range(self.__length + 1))
-        self.size = [1] * N
+        self.size = [1] * (N + 1)
     # O(logn)
     def find(self, value:int):
-        # if value < self.array[value]: self.maximum = self.array[value]
-        value = self.find(self.array[value])
+        if value < self.array[value]: self.maximum = self.array[value]
+        else: self.maximum = value
+        if value != self.array[value]:
+            value = self.find(self.array[value])
+        value = self.maximum
         return value
     # O(logn)
     def is_connect(self, p:int, q:int):
@@ -86,5 +89,9 @@ class Findlargest:
 social_media = Socialmedia(10)
 find_largest = Findlargest(10)
 find_largest.union(8, 10)
-find_largest.union(2, 10)
-find_largest.find(2)
+find_largest.union(2, 8)
+find_largest.union(2, 3)
+find_largest.union(1, 3)
+print(find_largest.is_connect(6,2))
+print(find_largest.array)
+print(find_largest.find(2))
