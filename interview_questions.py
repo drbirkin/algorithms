@@ -55,43 +55,59 @@ class Socialmedia:
 
 class Findlargest:
     array = list()
-    maximum = 0
+    maximum_values = list()
     # O(n)
     def __init__(self, N:int):
         self.__length = N
         self.array = list(range(self.__length + 1))
+        self.maximum_values = list(range(self.__length + 1))
         self.size = [1] * (N + 1)
     # O(logn)
     def find(self, value:int):
-        if value < self.array[value]: self.maximum = self.array[value]
-        else: self.maximum = value
         if value != self.array[value]:
-            value = self.find(self.array[value])
-        value = self.maximum
-        return value
+            value = self.find(self.array[value]).get("root")
+        return {
+            "root": value,
+            "maximum": self.maximum_values[value]}
     # O(logn)
     def is_connect(self, p:int, q:int):
-        return self.find(p) == self.find(q)
+        return self.find(p).get("root") == self.find(q).get("root")
     # O(log(n)) TODO larger number as root
     def union (self, p:int, q:int):
-        p_value = self.find(p)
-        q_value = self.find(q)
+        p_obj = self.find(p) 
+        q_obj = self.find(q)
+        p_max, p_root = p_obj.get("maximum"), p_obj.get("root")
+        q_max, q_root = q_obj.get("maximum"), q_obj.get("root")
 
-        if p_value != q_value:
+        if p_obj != q_obj:
 
-            if self.size[p_value] <= self.size[q_value]:
-                self.array[p_value] = q_value
-                self.size[q_value] += self.size[p_value]
+            if self.size[p_root] <= self.size[q_root]:
+                if p_root >= q_max and self.maximum_values[q_root] < p_root : self.maximum_values[q_root] = p_root
+                # elif not self.maximum_values[q_obj]: self.maximum_values[q_obj] = q_obj
+                self.array[p_root] = q_root
+                self.size[q_root] += self.size[p_root]
             else:
-                self.array[q_value] = p_value
-                self.size[p_value] += self.size[q_value]
+                if q_root >= p_max and self.maximum_values[p_root] < q_root : self.maximum_values[p_root] = q_root
+                # elif not self.maximum_values[p_obj]: self.maximum_values[p_obj] = p_obj
+                self.array[q_root] = p_root
+                self.size[p_root] += self.size[q_root]
 
 social_media = Socialmedia(10)
 find_largest = Findlargest(10)
 find_largest.union(8, 10)
-find_largest.union(2, 8)
-find_largest.union(2, 3)
-find_largest.union(1, 3)
-print(find_largest.is_connect(6,2))
 print(find_largest.array)
-print(find_largest.find(2))
+find_largest.union(2, 8)
+print(find_largest.array)
+find_largest.union(4, 3)
+print(find_largest.array)
+find_largest.union(1, 3)
+print(find_largest.array)
+find_largest.union(9, 3)
+print(find_largest.array)
+find_largest.union(3, 7)
+print(find_largest.array)
+find_largest.union(1, 2)
+
+print(find_largest.array)
+print(find_largest.is_connect(1,2))
+print(find_largest.find(10))
