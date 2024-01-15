@@ -74,7 +74,7 @@ class Findlargest:
         return self.find(p).get("root") == self.find(q).get("root")
     # O(log(n)) TODO larger number as root
     def union (self, p:int, q:int):
-        p_obj = self.find(p) 
+        p_obj = self.find(p)
         q_obj = self.find(q)
         p_max, p_root = p_obj.get("maximum"), p_obj.get("root")
         q_max, q_root = q_obj.get("maximum"), q_obj.get("root")
@@ -82,32 +82,37 @@ class Findlargest:
         if p_obj != q_obj:
 
             if self.size[p_root] <= self.size[q_root]:
-                if p_root >= q_max and self.maximum_values[q_root] < p_root : self.maximum_values[q_root] = p_root
+                # path q tree
+                if p_max >= q_max : self.maximum_values[q_root] = p_max
                 # elif not self.maximum_values[q_obj]: self.maximum_values[q_obj] = q_obj
                 self.array[p_root] = q_root
                 self.size[q_root] += self.size[p_root]
             else:
-                if q_root >= p_max and self.maximum_values[p_root] < q_root : self.maximum_values[p_root] = q_root
+                # path p tree
+                if q_max >= p_max: self.maximum_values[p_root] = q_max
                 # elif not self.maximum_values[p_obj]: self.maximum_values[p_obj] = p_obj
                 self.array[q_root] = p_root
                 self.size[p_root] += self.size[q_root]
 
 social_media = Socialmedia(10)
 find_largest = Findlargest(10)
-find_largest.union(8, 10)
+find_largest.union(10, 8)
 print(find_largest.array)
+print(find_largest.find(10))
 find_largest.union(2, 8)
 print(find_largest.array)
+print(find_largest.find(10))
 find_largest.union(4, 3)
 print(find_largest.array)
 find_largest.union(1, 3)
 print(find_largest.array)
-find_largest.union(9, 3)
+find_largest.union(9, 6)
 print(find_largest.array)
 find_largest.union(3, 7)
 print(find_largest.array)
 find_largest.union(1, 2)
+print(find_largest.find(10))
 
 print(find_largest.array)
 print(find_largest.is_connect(1,2))
-print(find_largest.find(10))
+print(find_largest.find(9))
