@@ -94,25 +94,77 @@ class Findlargest:
                 self.array[q_root] = p_root
                 self.size[p_root] += self.size[q_root]
 
+# Question 3
+# Successor with delete. Given a set of
+# n integers
+# S={0,1,...,n−1} and a sequence of requests of the following form:
+
+# Remove
+# x from
+# S
+
+# Find the successor of
+# x: the smallest
+# y in
+# S such that
+# y≥x.
+
+# design a data type so that all operations (except construction)  take logarithmic time or better in the worst case.
+
+class Delete_successor:
+    array= list()
+    # O(n)
+    def __init__(self, N:int):
+        self.__length = N
+        self.array = list(range(self.__length + 1))
+        self.size = [1] * (N + 1)
+    # O(1)
+    def find(self, value:int):
+        # O(1)
+        if value != self.array[value]:
+            # find smallest successor >= delete
+            value = self.find(self.array[value])
+
+        return value
+    # O(logn)
+    def is_connect(self, p:int, q:int):
+        return self.find(p) == self.find(q)
+    # O(logn)
+    def delete(self, p:int):
+        self.tmp_successor_root = self.find(p)
+        if p + 1 <= self.__length:
+            self.array[p] = p + 1
+
+
 social_media = Socialmedia(10)
 find_largest = Findlargest(10)
-find_largest.union(10, 8)
-print(find_largest.array)
-print(find_largest.find(10))
-find_largest.union(2, 8)
-print(find_largest.array)
-print(find_largest.find(10))
-find_largest.union(4, 3)
-print(find_largest.array)
-find_largest.union(1, 3)
-print(find_largest.array)
-find_largest.union(9, 6)
-print(find_largest.array)
-find_largest.union(3, 7)
-print(find_largest.array)
-find_largest.union(1, 2)
-print(find_largest.find(10))
+delete_successor = Delete_successor(100)
+# find_largest.union(10, 8)
+# print(find_largest.array)
+# print(find_largest.find(10))
+# find_largest.union(2, 8)
+# print(find_largest.array)
+# print(find_largest.find(10))
+# find_largest.union(4, 3)
+# print(find_largest.array)
+# find_largest.union(1, 3)
+# print(find_largest.array)
+# find_largest.union(9, 6)
+# print(find_largest.array)
+# find_largest.union(3, 7)
+# print(find_largest.array)
+# find_largest.union(1, 2)
+# print(find_largest.find(10))
 
-print(find_largest.array)
-print(find_largest.is_connect(1,2))
-print(find_largest.find(9))
+# print(find_largest.array)
+# print(find_largest.is_connect(1,2))
+# print(find_largest.find(9))
+
+
+delete_successor.delete(4)
+delete_successor.delete(3)
+delete_successor.delete(1)
+delete_successor.delete(100)
+print(delete_successor.is_connect(2, 5))
+print(delete_successor.find(3))
+print(delete_successor.find(1))
