@@ -2,127 +2,62 @@ import time
 from typing import List
 import math
 
-class Unionfind:
-    array = list()
-    # O(n)
-    def __init__(self, N:int):
-        self.__length = N
-        self.array = list(range(self.__length + 1))
-    # O(1)
-    def is_connect (self, p:int, q:int):
-        return self.array[p] == self.array[q]
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
-    # O(n)
-    def union (self, p_id:int, q_id:int):
-        p_value = self.array[p_id]
-        q_value = self.array[q_id]
-        # Change all entries with p to q
-        for id in range(len(self.array)):
-            if self.array[id] == p_value:
-                self.array[id] = q_value
 
-class Quickunion:
-    array = list()
-    # O(n)
-    def __init__(self, N:int):
-        self.__length = N
-        self.array = list(range(self.__length + 1))
-    # O(n)
-    def root(self, value:int):
-        while value != self.array[value]:
-            value = self.array[value]
-        return value
-    # O(n)
-    def is_connect (self, p:int, q:int):
-        return self.root(p) == self.root(q)
-    # O(n)
-    def union (self, p:int, q:int):
-        p_value = self.root(p)
-        q_value = self.root(q)
-        # Change root value
-        self.array[p_value] = self.array[q_value]
+class LinkedList:
+    def __init__(self):
+        self.head = None
 
-class Weight_QU:
-    array = list()
-    # O(n)
-    def __init__(self, N:int):
-        self.__length = N
-        self.array = list(range(self.__length + 1))
-        self.size = [1] * N
-    # O(log(n)) in amortized time analysis, but not witth n-1 deep tree (O(n))
-    def root(self, value:int):
-        while value != self.array[value]:
-            value = self.array[value]
-        return value
-    # O(log(n))
-    def is_connect (self, p:int, q:int):
-        return self.root(p) == self.root(q)
-    # O(log(n))
-    def union (self, p:int, q:int):
-        p_value = self.root(p)
-        q_value = self.root(q)
+    def append(self, data):
+        new_node = Node(data)
+        # print(new_node)
+        if not self.head:
+            self.head = new_node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
 
-        if p_value != q_value:
-
-            if self.size[p_value] <= self.size[q_value]:
-                self.array[p_value] = q_value
-                self.size[q_value] += self.size[p_value]
+    # delete node based on value
+    def remove(self, data):
+        current = self.head
+        # print(current, self.head)
+        prev_node = None
+        while current:
+            if current.data == data:
+                tmp = current.next
+                current.next = None
+                # print(tmp, current.next)
+                if prev_node:
+                    prev_node.next = tmp
+                else:
+                    self.head = tmp
+                # current is holding the ref of self.head but self.head is the node variable which needs to update as well, if removes head
+                current = tmp
             else:
-                self.array[q_value] = p_value
-                self.size[p_value] += self.size[q_value]
+                prev_node = current
+                current = current.next
 
-class Weight_Path_QU:
-    array = list()
-    # O(n)
-    def __init__(self, N:int):
-        self.__length = N
-        self.array = list(range(self.__length + 1))
-        self.size = [1] * N
-    # O(log(n)) in amortized time analysis, but not witth n-1 deep tree (O(n))
-    def root(self, value:int):
-        if value != self.array[value]:
-        # Path compression
-            value = self.root(self.array[value])
-        return value
-    # O(log(n))
-    def is_connect (self, p:int, q:int):
-        return self.root(p) == self.root(q)
-    # O(log(n))
-    def union (self, p:int, q:int):
-        p_value = self.root(p)
-        q_value = self.root(q)
+    def display(self):
+        current = self.head
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")
 
-        if p_value != q_value:
 
-            if self.size[p_value] <= self.size[q_value]:
-                self.array[p_value] = q_value
-                self.size[q_value] += self.size[p_value]
-            else:
-                self.array[q_value] = p_value
-                self.size[p_value] += self.size[q_value]
-# Union find
-# time complexity n^2 on n operations (n * union operations)
-union_find = Unionfind(10)
-union_find.union(2,3)
-print(union_find.array)
-print(union_find.is_connect(2,3))
+# Creating a linked list
+llist = LinkedList()
+llist.append(10)
+llist.append(20)
+llist.append(30)
+llist.append(20)
+llist.remove(10)
 
-# Quick union
-# time complexity n^2 on n operations but should be slightly performant
-quick_union = Quickunion(10)
-quick_union.union(2,4)
-print(quick_union.array)
-print(quick_union.is_connect(2,4))
-
-# Weighted Quick union
-# time complexity n*log(n) on n operations
-weight_qu = Weight_QU(10)
-weight_qu.union(2,4)
-print(weight_qu.array)
-weight_qu.union(1,6)
-print(weight_qu.array)
-weight_qu.union(6,8)
-print(weight_qu.array)
-print(weight_qu.is_connect(1,8))
-
-# TODO improvements with weigthed QU and path comparision also both
+# Displaying the linked list
+llist.display()
