@@ -2,48 +2,31 @@ import time
 from typing import List
 import math
 
-class Graph:
-    def __init__(self, num_of_nodes, directed=True):
-        self.m_num_of_nodes = num_of_nodes
-        self.m_nodes = range(self.m_num_of_nodes)
-
-        # Define the type of a graph
-        self.m_directed = directed
-
-        self.m_adj_list = {node: set() for node in self.m_nodes}      
-
-    def add_edge(self, node1, node2, weight=1):
-        self.m_adj_list[node1].add((node2, weight))
-        
-        if not self.m_directed:
-            self.m_adj_list[node2].add((node1, weight))
+class Solution:
+    def brute_force(self, arr):
+        max_res = arr[0]
+        for i in range(len(arr)):
+            tmp = 0
+            for j in range(i, len(arr)):
+                tmp += arr[j]
+                max_res = max(tmp, max_res)
+        return max_res
          
-    def dfs(self, start, target, path = [], visited = set()):
-        path.append(start)
-        visited.add(start)
-        if start == target:
-            return path
-        for (neighbour, weight) in self.m_adj_list[start]:
-            if neighbour not in visited:
-                result = self.dfs(neighbour, target, path, visited)
-                if result is not None:
-                    return result
-        path.pop()
-        return None   
+    def kadane(self, arr):
+        # final compare garuantees of max value at that stage
+        res = arr[0]
+        # check start again garuantees max value of tmp stage
+        tmp = arr[0]
+        for i in range(1, len(arr)):
+            tmp = max(tmp + arr[i], arr[i])
+            
+            res = max(res, tmp)
+        return res   
     
-    def print_adj_list(self):
-        for key in self.m_adj_list.keys():
-            print("node", key, ": ", self.m_adj_list[key])
 
-graph = Graph(5)
+case = [2, 3, -8, 7, -1, 2, 3]
 
-graph.add_edge(0, 0, 25)
-graph.add_edge(0, 1, 5)
-graph.add_edge(0, 2, 3)
-graph.add_edge(1, 3, 1)
-graph.add_edge(1, 4, 15)
-graph.add_edge(4, 2, 7)
-graph.add_edge(4, 3, 11)
+solution = Solution()
 
-graph.print_adj_list()
-print(graph.dfs(0, 3))
+print(solution.brute_force(case))
+print(solution.kadane(case))
