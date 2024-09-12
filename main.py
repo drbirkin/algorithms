@@ -3,34 +3,27 @@ from typing import List
 import math
 
 class Solution:
-    # def brute_force(self, arr):
-    #     max_res = arr[0]
-    #     for i in range(len(arr)):
-    #         tmp = 0
-    #         for j in range(i, len(arr)):
-    #             tmp += arr[j]
-    #             max_res = max(tmp, max_res)
-    #     return max_res
-         
-    def kadane(self, arr):
-        # final compare garuantees of max value at that stage
-        res = arr[0][0]
-        # check start again garuantees max value of tmp stage
-        for j in range(len(arr)):
-            tmp = arr[j][0]
-            for i in range(1, len(arr[j])):
-                tmp = max(tmp + arr[j][i], arr[j][i])
-                
-                res = max(res, tmp)
-        return res   
+    def sort(self, arr, n):
+        low = 0
+        high = n -1
+        mid = 0
+        
+        while mid <= high:
+            if arr[mid] == 0:
+                arr[low], arr[mid] = arr[mid], arr[low]
+                low += 1
+                mid += 1
+            elif arr[mid] == 1:
+                mid += 1
+            else:
+                arr[mid], arr[high] = arr[high], arr[mid]
+                high -= 1
+        return arr   
     
 
-case =  [[ 1,  2, -1, -4, -20],
-          [-8, -3,  4,  2,   1],
-          [ 3,  8, 10,  1,   3],
-          [-4, -1,  1,  7,  -6]]
+case = [0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1]
 
 solution = Solution()
 
 # print(solution.brute_force(case))
-print(solution.kadane(case))
+print(solution.sort(case, len(case)))
