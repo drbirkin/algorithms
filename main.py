@@ -16,6 +16,16 @@ class Solution:
 
         return max_val
     
+    def sliding_window(self, arr, K):
+        window_sum = sum(arr[:K])
+        max_val = window_sum
+        
+        for i in range(len(arr) - K):
+            window_sum = window_sum - arr[i] + arr[K + i]
+            max_val = max(window_sum, max_val)
+            
+        return max_val
+    
 
 case = [0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1]
 
@@ -23,3 +33,4 @@ solution = Solution()
 
 # print(solution.brute_force(case))
 print(solution.brute_force(case, 3))
+print(solution.sliding_window(case, 3))
